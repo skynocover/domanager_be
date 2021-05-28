@@ -1,0 +1,26 @@
+[setting]
+    version="0.0.1"
+    port=3001
+
+[DB]
+    [DB.development]
+    user="root"
+    password="2wsx4rfv6yhn"
+    host="207.148.114.176"
+    port=5432
+    database="peman"
+
+    [DB.beta]
+    user="root"
+    password="2wsx4rfv6yhn"
+    host="207.148.114.176"
+    port=5432
+    database="peman"
+
+    [DB.production]
+    user="root"
+    password="2wsx4rfv6yhn"
+    host="postgres"
+    port=5432
+    database="peman"
+

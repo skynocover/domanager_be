@@ -1,0 +1,48 @@
+@url=http://localhost
+
+####
+POST {{url}}:3001/api/login
+Content-Type: application/json
+
+{
+  "account":"admin",
+  "password":"123456"
+}
+
+####
+POST {{url}}:3001/api/logout
+
+###
+GET {{url}}:3001/api/server
+
+######
+POST {{url}}:2019/load
+Content-Type: application/json
+
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [":2015"],
+          "routes": [
+            {
+              "handle": [
+                {
+                  "handler": "static_response",
+                  "body": "new world!"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+###
+GET {{url}}:2015
+
+######
+GET {{url}}:2019/config/

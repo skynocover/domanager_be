@@ -1,0 +1,5 @@
+node_modules
+prisma/migrations
+prisma/db.sqlite3
+yarn.lock
+yarn-error.log

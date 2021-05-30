@@ -1,6 +1,6 @@
 [setting]
     version="0.0.1"
-    port=3001
+    port=3730
 
 [DB]
     [DB.development]

@@ -72,12 +72,10 @@ routes.put('/servers', async (req, res) => {
       caddyFile += `}\n`;
     }
 
-    caddyFile += `
-    ${process.env.DOMAIN}:80 {
-      reverse_proxy /api/* localhost:${process.env.BEPORT}
-      reverse_proxy localhost:${process.env.FEPORT}
-    }
-    `;
+    caddyFile += `${process.env.DOMAIN}:80 {\n`;
+    caddyFile += `reverse_proxy /api/* localhost:${process.env.BEPORT}\n`;
+    caddyFile += `reverse_proxy localhost:${process.env.FEPORT}\n`;
+    caddyFile += `}\n`;
 
     await prisma.handler.deleteMany({
       where: {
@@ -104,7 +102,8 @@ routes.put('/servers', async (req, res) => {
     colorlog('5th', 'debug');
     res.json(Resp.success);
   } catch (error) {
-    res.json({ ...Resp.putCaddyError, error });
+    colorlog(`put caddy fail: error: ${error.message}`, 'error');
+    res.json({ ...Resp.putCaddyError, error: error.message });
   }
 });
 

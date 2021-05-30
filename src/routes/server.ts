@@ -28,7 +28,7 @@ routes.get('/servers', async (req, res) => {
 routes.put('/servers', async (req, res) => {
   try {
     let { servers } = req.body;
-    // colorlog(`servers: ${JSON.stringify(servers)}`, 'info');
+    colorlog(`servers: ${JSON.stringify(servers)}`, 'info');
     let caddyFile = '';
     let serverIDs: number[] = []; //要被刪除的serverID
     let handlerIDs: number[] = []; //要被刪除的handlerID
@@ -41,7 +41,6 @@ routes.put('/servers', async (req, res) => {
         port: server.port,
       };
 
-      colorlog('1st', 'debug');
       let fserver = await prisma.server.upsert({
         where: { id: server.id },
         update: instance,
@@ -49,7 +48,6 @@ routes.put('/servers', async (req, res) => {
       });
       caddyFile += `${server.domain ? server.domain : ''}:${server.port} {\n`;
 
-      colorlog('2nd', 'debug');
       for (const handler of server.handlers) {
         handlerIDs.push(handler.id);
         let iHandler: any = {
@@ -64,7 +62,6 @@ routes.put('/servers', async (req, res) => {
           update: iHandler,
           create: iHandler,
         });
-        colorlog('3rd', 'debug');
         caddyFile += `${handler.type === 'proxy' ? 'reverse_proxy ' : 'root '}${
           handler.routes ? handler.routes + ' ' : ''
         }${handler.target}\n`;
@@ -90,7 +87,6 @@ routes.put('/servers', async (req, res) => {
       },
     });
 
-    colorlog('4th', 'debug');
     await prisma.server.deleteMany({
       where: {
         id: {

@@ -3,3 +3,4 @@ prisma/migrations
 prisma/db.sqlite3
 yarn.lock
 yarn-error.log
+prisma/db.sqlite3-journal

@@ -5,8 +5,8 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import cors from 'cors';
-import { init } from './caddy/caddy';
 
+import { init } from './db/db';
 import { account } from './routes/account';
 import { caddy } from './routes/server';
 import { checkSession } from './middleware/checksession';
@@ -23,7 +23,7 @@ const app = express();
 
 try {
   (async () => {
-    // init();
+    init();
   })();
 } catch (err) {
   console.error('Unable to connect to the database: ', err);

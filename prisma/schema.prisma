@@ -9,7 +9,7 @@ generator client {
 }
 
 model User {
-  id       String @id
+  id       String  @unique
   password String
 }
 

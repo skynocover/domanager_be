@@ -7,6 +7,7 @@ import { Resp } from '../resp/resp';
 import { server } from '../caddy/caddy';
 import { colorlog } from '../utils/colorlog';
 import { prisma } from '../db/db';
+import { col } from 'sequelize/types';
 const routes = express.Router();
 
 routes.get('/servers', async (req, res) => {
@@ -40,6 +41,7 @@ routes.put('/servers', async (req, res) => {
         port: server.port,
       };
 
+      colorlog('1st', 'debug');
       let fserver = await prisma.server.upsert({
         where: { id: server.id },
         update: instance,
@@ -47,6 +49,7 @@ routes.put('/servers', async (req, res) => {
       });
       caddyFile += `${server.domain ? server.domain : ''}:${server.port} {\n`;
 
+      colorlog('2nd', 'debug');
       for (const handler of server.handlers) {
         handlerIDs.push(handler.id);
         let iHandler: any = {
@@ -61,6 +64,7 @@ routes.put('/servers', async (req, res) => {
           update: iHandler,
           create: iHandler,
         });
+        colorlog('3rd', 'debug');
         caddyFile += `${handler.type === 'proxy' ? 'reverse_proxy ' : 'root '}${
           handler.routes ? handler.routes + ' ' : ''
         }${handler.target}\n`;
@@ -86,6 +90,7 @@ routes.put('/servers', async (req, res) => {
       },
     });
 
+    colorlog('4th', 'debug');
     await prisma.server.deleteMany({
       where: {
         id: {
@@ -94,18 +99,17 @@ routes.put('/servers', async (req, res) => {
       },
     });
 
-    // colorlog(caddyFile, 'info');
+    colorlog(caddyFile, 'info');
 
     let result = await axios.post('http://localhost:2019/load', caddyFile, {
       headers: { 'Content-Type': 'text/caddyfile' },
     });
 
+    colorlog('5th', 'debug');
     res.json(Resp.success);
   } catch (error) {
     res.json({ ...Resp.putCaddyError, error });
   }
 });
-
-routes.post('/server', async (req, res) => {});
 
 export { routes as caddy };

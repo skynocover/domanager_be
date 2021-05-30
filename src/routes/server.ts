@@ -73,7 +73,8 @@ routes.put('/servers', async (req, res) => {
 
     caddyFile += `
     ${process.env.DOMAIN}:80 {
-      reverse_proxy localhost:${process.env.PORT}
+      reverse_proxy /api/* localhost:${process.env.BEPORT}
+      reverse_proxy localhost:${process.env.FEPORT}
     }
     `;
 

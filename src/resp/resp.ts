@@ -13,7 +13,12 @@ export const Resp = {
   // Server Error
   fetchCaddyError: {
     errorCode: 2000,
-    errorMessage: 'request caddy失敗',
+    errorMessage: 'request caddy fail',
+  },
+
+  putCaddyError: {
+    errorCode: 2000,
+    errorMessage: 'put caddy fail',
   },
 
   // User Fail

@@ -7,48 +7,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int?
-}
-
 model User {
   id       String @id
   password String
 }
 
 model Server {
-  id             Int              @id @default(autoincrement())
-  name           String           @unique
-  domain         String?
-  port           String?
-  proxy          Proxy[]
-  staticFile     StaticFile[]
-  staticResponse StaticResponse[]
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  domain   String?
+  port     String    @default("80")
+  handlers Handler[]
 }
 
-model Proxy {
+model Handler {
   id       Int     @id @default(autoincrement())
   serverId Int
   Server   Server  @relation(fields: [serverId], references: [id])
+  type     String?
   routes   String?
-  target   String
-}
-
-model StaticFile {
-  id       Int    @id @default(autoincrement())
-  serverId Int
-  Server   Server @relation(fields: [serverId], references: [id])
-  routes   String
-  target   String
-}
-
-model StaticResponse {
-  id       Int    @id @default(autoincrement())
-  serverId Int
-  Server   Server @relation(fields: [serverId], references: [id])
-  body     String
+  target   String?
 }

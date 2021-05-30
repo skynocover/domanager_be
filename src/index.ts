@@ -23,7 +23,7 @@ const app = express();
 
 try {
   (async () => {
-    init();
+    // init();
   })();
 } catch (err) {
   console.error('Unable to connect to the database: ', err);
